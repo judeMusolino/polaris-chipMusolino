@@ -13,7 +13,11 @@ export class MyCard extends LitElement {
 
   constructor() {
     super();
-    this.title = "My card";
+    this.title="Card Title";
+    this.image="https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg"; 
+    this.para="This is probably an image of a dog. This is the default text for the dog image."; 
+    this.link="https://hax.psu.edu"; 
+    this.button="Details"; 
   }
 
   static get styles() {
@@ -36,7 +40,10 @@ export class MyCard extends LitElement {
       .heading {
         font-size: 32px; 
         color: black; 
-        margin: 8px 4px 8px 80px; 
+        text-align: center;
+        margin: 8px; 
+        height: 36px;  
+        overflow: hidden; 
 }
       .image {
         float: left; 
@@ -71,7 +78,6 @@ export class MyCard extends LitElement {
 
   render() {
     return html`
-      <div id="wrapper">
       <div class="card">
       <div class="heading">${this.title}</div>
     <img src="${this.image}"class="image" width=120 height=120>
@@ -80,7 +86,6 @@ export class MyCard extends LitElement {
     <a href="${this.link}">
       <button class="btn">${this.button}</button>
     </a>
-    </div>
     </div>`;
   }
 
