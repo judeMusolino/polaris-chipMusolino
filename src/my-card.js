@@ -13,6 +13,8 @@ export class MyCard extends LitElement {
 
   constructor() {
     super();
+    this.fancy=false;
+    this.description="This is the description for the box. There is something fancy going on.";
     this.title="Card Title";
     this.image="https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg"; 
     this.para="This is probably an image of a dog. This is the default text for the dog image."; 
@@ -22,6 +24,16 @@ export class MyCard extends LitElement {
 
   static get styles() {
     return css`
+      :host([fancy]) {
+        display: inline-flex;
+        background-color: lightblue;
+        border: 2px solid blue;
+        box-shadow: 10px 5px 5px blue;
+        width: 340px; 
+        height: 360px;
+        margin: 8px;   
+      }
+      
       :host {
         display: inline-flex;
       }
@@ -31,7 +43,7 @@ export class MyCard extends LitElement {
         width: 300px; 
         height: 240px; 
         padding: 16px; 
-        margin: 8px; 
+        margin: 2px auto;  
 }
 
       #card-list {
@@ -72,8 +84,35 @@ export class MyCard extends LitElement {
       .btn:hover {
         background-color: lime; 
 }
+      details summary {
+          text-align: left;
+          font-size: 20px;
+          padding: 8px 0;
+          margin: 16px 0px 0px 0px; 
+        }
+
+      details [open] summary {
+        font-weight: bold; 
+      }
+
+      details div {
+        border: 2px solid black;
+        text-align: left;
+        padding: 8px;
+        height: 18px;
+        overflow: auto;
 
     `;
+  }
+
+  openChanged(e) {
+    console.log(e.newState);
+    if (e.newState === "open") {
+      this.fancy = true;
+    }
+    else {
+      this.fancy = false;
+    }
   }
 
   render() {
@@ -86,7 +125,14 @@ export class MyCard extends LitElement {
     <a href="${this.link}">
       <button class="btn">${this.button}</button>
     </a>
-    </div>`;
+    <details ?open="${this.fancy}" @toggle="${this.openChanged}">
+      <summary>Description</summary>
+    <div>
+    <slot>${this.description}</slot>
+    </div>
+    </details>
+    </div>
+    `;
   }
 
   static get properties() {
@@ -96,6 +142,7 @@ export class MyCard extends LitElement {
       para: { type: String },
       button: { type: String },
       link: { type: String },
+      fancy: { type: Boolean, reflect: true },
     };
   }
 }
