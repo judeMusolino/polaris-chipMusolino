@@ -105,6 +105,7 @@ export class MyCard extends LitElement {
         padding: 8px;
         height: 18px;
         overflow: auto;
+      }
 
     `;
   }
@@ -124,8 +125,7 @@ export class MyCard extends LitElement {
       <div class="wrapper">
       <div class="card">
       <div class="heading">${this.title}</div>
-    <img src="${this.image}"class="image" width=120 height=120>
-  </img>
+    <img src="${this.image}" class="image" width=120 height=120>
     <p class="para">${this.para}</p>
     <a href="${this.link}">
       <button class="btn">${this.button}</button>
@@ -153,36 +153,5 @@ export class MyCard extends LitElement {
   }
 }
 
-document.querySelector('.duplicate').addEventListener('click', function(event) {
-  if (document.querySelectorAll("my-card").length < 10) {
-    const newCard = document.querySelector("my-card").cloneNode(true);
-    document.querySelector("#wrapper").appendChild(newCard); 
-  }
-});
-
-document.querySelector('#changetitle').addEventListener('click', function(e) {
-  document.querySelector('.heading').innerHTML = "This Dog"; 
-})
-
-document.querySelector('#changeimage').addEventListener('click', function(e) {
-  document.querySelector('.image').src = "https://hips.hearstapps.com/hmg-prod/images/worlds-smallest-dogs-1647336453.jpg"; 
-})
-
-document.querySelector('#changebg').addEventListener('click', function(e) {
-  const link = document.querySelector("my-card"); 
-  if (link.classList.contains('change-color')) {
-      link.classList.remove('change-color');    
-    }
-    else {
-      link.classList.add('change-color');      
-    }
-})
-
-document.querySelector('#delete').addEventListener('click', function(e) {
-  console.log(document.querySelectorAll("my-card").length); 
-  if (document.querySelectorAll("my-card").length !== 1) {
-    document.querySelector("my-card").remove(); 
-  }
-})
 
 globalThis.customElements.define(MyCard.tag, MyCard);
