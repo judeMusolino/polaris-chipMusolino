@@ -26,20 +26,24 @@ export class MyCard extends LitElement {
     return css`
       :host([fancy]) {
         display: inline-flex;
-        background-color: lightblue;
+        background-color: lightblue; 
         border: 2px solid blue;
         box-shadow: 10px 5px 5px blue;
         width: 340px; 
         height: 360px;
-        margin: 8px;   
+        margin: 16px;   
       }
       
       :host {
         display: inline-flex;
       }
+
+      .card.change-color{
+        background-color: yellow; 
+    }
       .card {
-        background-color: orange; 
-        border-radius: 10%;
+        background-color: lightblue; 
+        border-radius: 5%;
         width: 300px; 
         height: 240px; 
         padding: 16px; 
@@ -96,7 +100,7 @@ export class MyCard extends LitElement {
       }
 
       details div {
-        border: 2px solid black;
+        border: 2px solid blue;
         text-align: left;
         padding: 8px;
         height: 18px;
@@ -117,6 +121,7 @@ export class MyCard extends LitElement {
 
   render() {
     return html`
+      <div class="wrapper">
       <div class="card">
       <div class="heading">${this.title}</div>
     <img src="${this.image}"class="image" width=120 height=120>
@@ -132,6 +137,7 @@ export class MyCard extends LitElement {
     </div>
     </details>
     </div>
+  </div>
     `;
   }
 
@@ -146,5 +152,37 @@ export class MyCard extends LitElement {
     };
   }
 }
+
+document.querySelector('.duplicate').addEventListener('click', function(event) {
+  if (document.querySelectorAll("my-card").length < 10) {
+    const newCard = document.querySelector("my-card").cloneNode(true);
+    document.querySelector("#wrapper").appendChild(newCard); 
+  }
+});
+
+document.querySelector('#changetitle').addEventListener('click', function(e) {
+  document.querySelector('.heading').innerHTML = "This Dog"; 
+})
+
+document.querySelector('#changeimage').addEventListener('click', function(e) {
+  document.querySelector('.image').src = "https://hips.hearstapps.com/hmg-prod/images/worlds-smallest-dogs-1647336453.jpg"; 
+})
+
+document.querySelector('#changebg').addEventListener('click', function(e) {
+  const link = document.querySelector("my-card"); 
+  if (link.classList.contains('change-color')) {
+      link.classList.remove('change-color');    
+    }
+    else {
+      link.classList.add('change-color');      
+    }
+})
+
+document.querySelector('#delete').addEventListener('click', function(e) {
+  console.log(document.querySelectorAll("my-card").length); 
+  if (document.querySelectorAll("my-card").length !== 1) {
+    document.querySelector("my-card").remove(); 
+  }
+})
 
 globalThis.customElements.define(MyCard.tag, MyCard);
