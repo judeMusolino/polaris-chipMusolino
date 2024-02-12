@@ -38,9 +38,7 @@ export class MyCard extends LitElement {
         display: inline-flex;
       }
 
-      .card.change-color{
-        background-color: yellow; 
-    }
+      
       .card {
         background-color: lightblue; 
         border-radius: 5%;
@@ -49,6 +47,10 @@ export class MyCard extends LitElement {
         padding: 16px; 
         margin: 2px auto;  
 }
+
+      .change-color{
+        background-color: yellow; 
+      }
 
       #card-list {
       display: flex;

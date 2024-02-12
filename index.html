@@ -55,31 +55,25 @@
   <script> 
   
   const myCard=document.querySelector("my-card"); 
-  const shadowRoot=myCard.shadowRoot; 
+
   document.querySelector('.duplicate').addEventListener('click', function(event) {
-    if (document.querySelectorAll("my-card").length < 10) {
+    if (document.querySelectorAll("my-card").length < 16) {
       const newCard = document.querySelector("my-card").cloneNode(true);
       document.querySelector(".wrapper").appendChild(newCard); 
     }
   });
   
   document.querySelector('#changetitle').addEventListener('click', function(e) {
-    const heading=shadowRoot.querySelector('.heading'); 
-    heading.textContent="The Dog"; 
+    myCard.title = "The Dogs"
   })
   
   document.querySelector('#changeimage').addEventListener('click', function(e) {
-    document.querySelector('.image').src = "https://hips.hearstapps.com/hmg-prod/images/worlds-smallest-dogs-1647336453.jpg"; 
+    myCard.image = "https://hips.hearstapps.com/hmg-prod/images/worlds-smallest-dogs-1647336453.jpg"; 
   })
   
-  document.querySelector('#changebg').addEventListener('click', function(e) {
-    const link = document.querySelector("my-card"); 
-    if (link.classList.contains('change-color')) {
-        link.classList.remove('change-color');    
-      }
-      else {
-        link.classList.add('change-color');      
-      }
+  document.querySelector('#changebg').addEventListener('click', function(e) { 
+    const shadowRoot=myCard.shadowRoot; 
+    shadowRoot.querySelector('.card').classList.toggle('change-color');
   })
   
   document.querySelector('#delete').addEventListener('click', function(e) {
