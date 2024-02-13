@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import "@lrnwebcomponents/meme-maker/meme-maker.js"; 
 
 /**
  * Now it's your turn. Here's what we need to try and do
@@ -63,11 +64,18 @@ export class MyCard extends LitElement {
         height: 36px;  
         overflow: hidden; 
 }
+
       .image {
         float: left; 
         margin: 8px 4px 4px 10px; 
-        border-radius: 0%; 
+        border-radius: 0%;     
 }
+      .meme {
+        font-size: 8px; 
+        width: 120px; 
+        height: 120px; 
+      }
+
       .para {
         padding: 4px; 
         font-size: 16px; 
@@ -127,8 +135,10 @@ export class MyCard extends LitElement {
       <div class="wrapper">
       <div class="card">
       <div class="heading">${this.title}</div>
-    <img src="${this.image}" class="image" width=120 height=120>
-    <p class="para">${this.para}</p>
+      <div class="image">
+      <meme-maker class="meme" alt="Cat stalking a small toy" image-url="${this.image}" top-text="I bring you" bottom-text="the death"> </meme-maker> 
+      </div>
+      <p class="para">${this.para}</p>
     <a href="${this.link}">
       <button class="btn">${this.button}</button>
     </a>
