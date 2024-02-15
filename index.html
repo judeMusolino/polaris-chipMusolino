@@ -34,7 +34,8 @@
      
   <h1>counter</h1>
   <div class="count-wrapper">
-    <counter-app counter="16" min="10" max="25"></counter-app>
+  <counter-app></counter-app>
+  <counter-app counter=16 min=10 max=25></counter-app>
   </div>
 
   <h1>my-card</h1>
@@ -57,6 +58,7 @@
   <!-- this is what is bringing in the definition for this tag -->
   <script type="module" src="./src/polaris-chip.js"></script>
   <script type="module" src="./src/my-card.js"></script>
+  <script type="module" src="./src/counter-app.js"></script>
   <script> 
   
   const myCard=document.querySelector("my-card"); 
@@ -87,6 +89,8 @@
       document.querySelector("my-card").remove(); 
     }
   })
+
+  
   </script>
 
 </body>
