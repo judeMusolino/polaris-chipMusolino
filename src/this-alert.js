@@ -8,27 +8,32 @@ export class Alert extends LitElement {
 
     constructor() {
         super(); 
-        this.content = "This is an alert";  
-        this.status = "notice"; 
+        this.content="This is an alert";  
+        this.status="original"; 
+        this.sticky=false; 
     }
 
     static get styles() {
       return css`
-        :host([notice]) {
-          background-color: blue;    
-        }
-        
-        :host {
+        :host([sticky]) {
           position: sticky;  
-           top: 0px; 
-           
+        }
+
+        :host([sticky]).wrapper {
+          background-color: yellow;  
+        }
+
+        :host {
+          position: inline-flex;  
+          top: 0px; 
+          background-color: yellow; 
         }
 
         .wrapper {
-            background-color: purple;   
-            box-shadow: 5px 5px 5px blue;
-            margin: 0px;  
-            padding: 16px;   
+          background-color: purple; 
+          box-shadow: 5px 5px 5px blue;
+          margin: 0px;  
+          padding: 16px;   
         }
 
         .content {
@@ -47,20 +52,18 @@ export class Alert extends LitElement {
     openChanged(e) {
         console.log(e.newState);
         if (e.newState === "open") {
-          this.fancy = true;
+          this.sticky = true;
         }
         else {
-          this.fancy = false;
+          this.sticky = false;
         }
       }
 
 
     render() {
-      var textColor = "black";
-      if(this.status === "notice") {backgroundcolor = "blue"}
       
       return html`
-        <div class="wrapper" style="color:${backgroundcolor}">
+        <div class="wrapper">
         <details @toggle="${this.openChanged}">
             <summary>Alert!</summary>
             <div class="content">
@@ -80,7 +83,7 @@ export class Alert extends LitElement {
         opened: { type: String , reflect: true},
         status: { type: String , reflect: true},
         date: { type: String , reflect: true},
-        sticky: { type: String , reflect: true},
+        sticky: { type: Boolean , reflect: true},
         };
     }
 }
