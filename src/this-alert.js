@@ -12,6 +12,7 @@ export class Alert extends LitElement {
         this.status="original"; 
         this.sticky=false; 
         this.date="March 13, 2022"
+        
     }
 
     static get styles() {
@@ -46,13 +47,13 @@ export class Alert extends LitElement {
           color: white; 
         }
 
-        details summary {
+        .details .summary {
           height: 3.375rem;
-          width: 313.9px; 
+          width: 400px; 
           display: flex;
           border: none;
           position: center; 
-          background-color: transparent;
+          background-color: yellow;
           cursor: pointer;
           text-transform: uppercase;
           font-weight: 700;
@@ -63,8 +64,12 @@ export class Alert extends LitElement {
           font-size: 1.25rem; 
         }
 
+        details [open] summary {
+          justify-content: center; 
+        }
+
         details div {
-          
+          justify-content: center;
           max-width: 1350px;
           height: 100%;
           font-family: 'Roboto', sans-serif;
@@ -91,14 +96,6 @@ export class Alert extends LitElement {
           padding: 24px 0;
         }
 
-        .triangle {
-          bottom: 50px;
-          left: -35px;
-          position: absolute;
-          border-style: solid;
-          border-width: 0 50px 50px;
-        }
-
         .polygon {
           position: absolute;
           top: 0;
@@ -115,45 +112,58 @@ export class Alert extends LitElement {
           display: block;
           flex: 2;
           align-self: center;
-          padding: 0;
+          padding: 0px;
           position: relative;
           margin-right: 2vw;
+        }
+
+        .arrow {
+          border: solid black;
+          border-width: 0 2px 2px 0;
+          display: flex;
+          margin: 16px; 
+          padding: 1px;
+          transform: rotate(45deg);
+          -webkit-transform: rotate(45deg); 
+          width: 4px;  
+          height: 4px;  
         }
         `;
     }
 
-    openChanged(e) {
-        console.log(e.newState);
-        if (e.newState === "open") {
-          this.opened = true;
-        }
-        else {
-          this.opened = false;
-        }
+    openChanged() {
+      this.closed = !this.closed;
+      if (this.closed) {
+          localStorage.setItem('alertState', 'closed');
+      } else {
+          localStorage.removeItem('alertState');
+      }
       }
 
 
     render() {
       
       return html`
-        <div class="wrapper" ?open="${this.closed}">
-        <details ?open="${this.closed}" @toggle="${this.openChanged}">
-            <summary>
+        <div class="wrapper">
+        <div class="details" ?hidden="${this.closed}">
+          <button class=summary @click="${this.openChanged}">
             <svg xmlns="http://www.w3.org/2000/svg" width="82" height="82" viewBox="0 0 82 82" class="alert-icon"><g transform="translate(-350.099 -428.714)"><g transform="translate(350.099 428.714)" fill="none" stroke-width="6"><circle cx="41" cy="41" r="41" stroke="none"></circle><circle cx="41" cy="41" r="38" fill="none"></circle></g><g transform="translate(384.41 448.566)"><rect width="10.381" height="7.786" transform="translate(0.919 34.336)"></rect><path d="M6520.672,2327.554h-5.854l-3.21-23.669V2299.2h11.81v4.681Z" transform="translate(-6511.607 -2299.203)" class="alert-icon-min"></path></g></g></svg>
             Test Campus Alert!
-            <i class="icon-angle-down"></i>
-            </summary>
-            <div class="content">
-              <div class="date-time">
-                <p>${this.date}</p>
-                <p>12:00 AM</p>
-              </div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="82" height="82" viewBox="0 0 82 82" class="alert-icon"><g transform="translate(-350.099 -428.714)"><g transform="translate(350.099 428.714)" fill="none" stroke-width="6"><circle cx="41" cy="41" r="41" stroke="none"></circle><circle cx="41" cy="41" r="38" fill="none"></circle></g><g transform="translate(384.41 448.566)"><rect width="10.381" height="7.786" transform="translate(0.919 34.336)"></rect><path d="M6520.672,2327.554h-5.854l-3.21-23.669V2299.2h11.81v4.681Z" transform="translate(-6511.607 -2299.203)" class="alert-icon-min"></path></g></g></svg>
-            <slot class="content">${this.content}</slot>
-              <div class="triangl"></div>
-              <div class="polygon"></div>
-            </div>
-        </details>
+            <i class="arrow"> 
+            </i>
+          </button>
+        </div>
+        </div>
+        <div class="content" ?hidden="${!this.closed}">
+          <div class="date-time">
+            <p>${this.date}</p>
+            <p>12:00 AM</p>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="82" height="82" viewBox="0 0 82 82" class="alert-icon"><g transform="translate(-350.099 -428.714)"><g transform="translate(350.099 428.714)" fill="none" stroke-width="6"><circle cx="41" cy="41" r="41" stroke="none"></circle><circle cx="41" cy="41" r="38" fill="none"></circle></g><g transform="translate(384.41 448.566)"><rect width="10.381" height="7.786" transform="translate(0.919 34.336)"></rect><path d="M6520.672,2327.554h-5.854l-3.21-23.669V2299.2h11.81v4.681Z" transform="translate(-6511.607 -2299.203)" class="alert-icon-min"></path></g></g></svg>
+          <slot class="content">${this.content}</slot>
+          <div class="polygon"></div>
+          <button class="minimize" @click="${this.openChanged}">X
+          </button>
         </div>
          
         `;
