@@ -29,7 +29,7 @@ export class Alert extends LitElement {
         }
         
         .wrapper {
-          background-color: transparent; 
+          background-color: lightblue; 
           height: 3.375rem; 
           display: flex; 
           justify-content: center; 
