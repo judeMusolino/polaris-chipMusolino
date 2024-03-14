@@ -20,7 +20,6 @@ export class Alert extends LitElement {
         :host([sticky]) {
           position: sticky;
           top: 0px;
-          bottom: 0px; 
         }
 
         :host {
