@@ -18,23 +18,11 @@ export class HaxParty extends DDD {
           display: block;
         }
 
-        .box {
-            width: 200px; 
-            height: 200px; 
-            color: var(--ddd-theme-default-keystoneYellow); 
-        }
-
         .wrapper {
             color: var(--ddd-theme-default-keystoneYellow); 
-            min-height: var(--simple-modal-min-height, unset);
-            min-width: var(--simple-modal-min-width, unset);
-            z-index: var(--simple-modal-z-index, 1000);
-            resize: var(--simple-modal-resize, unset);
+            height: 200px;
+            width: 200px;
             padding: 0px;
-            --dialog-height: var(--simple-modal-height, auto);
-            --dialog-width: var(--simple-modal-width, 75vw);
-            --dialog-max-width: var(--simple-modal-max-width, 100vw);
-            --dialog-max-height: var(--simple-modal-max-height, 100vh);
         }
 
         .titlebar {
@@ -65,9 +53,7 @@ export class HaxParty extends DDD {
 
     render() {
       
-        return html`
-          <div class="box"></div>
-          
+        return html`          
           <div class="wrapper">
             <div class="titlebar">
                 <div class=title>${this.title}</div>
