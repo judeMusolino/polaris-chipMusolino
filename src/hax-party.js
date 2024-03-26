@@ -1,4 +1,6 @@
 import { DDD } from "@lrnwebcomponents/d-d-d/d-d-d.js";
+import {html, css } from 'lit';
+
 
 export class HaxParty extends DDD {
     static get tag() {
@@ -19,46 +21,89 @@ export class HaxParty extends DDD {
         }
 
         .wrapper {
-            color: var(--ddd-theme-default-keystoneYellow); 
-            height: 200px;
-            width: 200px;
-            padding: 0px;
+            background-color: white; 
+            margin: 20px; 
+            border-radius: var(--ddd-radius-xs); 
+            height: 400px;
+            width: 600px;
         }
 
         .titlebar {
             margin-top: 0px;
-            padding: var(--simple-modal-titlebar-padding, 0px var(--ddd-spacing-4));
+            border-radius: var(--ddd-radius-xs) var(--ddd-radius-xs) 0px 0px; 
+            padding: var(--ddd-spacing-4);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background-color: var(--simple-modal-titlebar-background, var(--ddd-theme-default-limestoneLight));
             height: var(--simple-modal-titlebar-height, unset);
-            line-height: var(--simple-modal-titlebar-line-height, unset);
-            color: var(--ddd-theme-default-nittanyNavy);
-            font-size: var(--ddd-theme-h3-font-size);
+            background-color: var(--ddd-theme-default-keystoneYellow);
         }
 
         .title {
-            background-color: transparent;
+            color: var(--ddd-theme-default-keystoneYellow);
             margin: 0;
             padding: 0;
             text-align: center;
-            font-size: 20px;
+            font-size: var(--ddd-theme-h6-font-size);
             line-height: 20px;
             color: black;
         }
 
+        .close {
+          color: var(--ddd-theme-default-original87Pink);
+          background-color: transparent; 
+        }
+
+        .heading {
+          display: block; 
+          font-size: var(--ddd-theme-h8-font-size); 
+          font: var(--ddd-font-secondary); 
+          margin: 0px;
+          padding: var(--ddd-spacing-4);
+          color: var(--simple-modal-header-color);
+        }
+
+        .inputwrapper {
+          padding: 0px; 
+          padding-left: var(--ddd-spacing-4);
+          padding-right: var(--ddd-spacing-4); 
+          justify-content: space-between;
+          display: flex;
+          align-items: center;
+        }
+
+        .username {
+          font-family: "Press Start 2P", sans-serif;
+          font-size: 32px;
+          padding: 8px;
+          margin: 0px; 
+        }
+
+        .add {
+          font-size: 16px; 
+          padding: 8px; 
+        }
       `];
     }
 
     render() {
       
         return html`          
-          <div class="wrapper">
-            <div class="titlebar">
-                <div class=title>${this.title}</div>
+          <div class=wrapper>
+
+
+            <div class=titlebar>
+              <div class=title>${this.title}</div>
+              <button class=close>x</button>
             </div>
 
+            <h5 class=heading>Enter username</h5>
+            <div class=inputwrapper>
+              <input class=username maxlength="30" placeholder="user name.." tabindex="">
+              <button class=add>Add</button>
+            </div>
+
+            <slot class=theparty></slot>
           </div>
            
           `;
