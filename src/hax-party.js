@@ -1,6 +1,6 @@
 import { DDD } from "@lrnwebcomponents/d-d-d/d-d-d.js";
 import {html, css } from 'lit';
-
+import "@lrnwebcomponents/rpg-character/rpg-character.js";
 
 export class HaxParty extends DDD {
     static get tag() {
@@ -10,6 +10,8 @@ export class HaxParty extends DDD {
     constructor() {
         super(); 
         this.title = "Add User(s) to Party"; 
+        this.party = []; 
+        this.seed = "username"; 
     }
     
     static get styles() {
@@ -24,8 +26,7 @@ export class HaxParty extends DDD {
             background-color: white; 
             margin: 20px; 
             border-radius: var(--ddd-radius-xs); 
-            height: 400px;
-            width: 600px;
+            width: 800px;
         }
 
         .titlebar {
@@ -67,7 +68,6 @@ export class HaxParty extends DDD {
           padding: 0px; 
           padding-left: var(--ddd-spacing-4);
           padding-right: var(--ddd-spacing-4); 
-          justify-content: space-between;
           display: flex;
           align-items: center;
         }
@@ -81,17 +81,77 @@ export class HaxParty extends DDD {
 
         .add {
           font-size: 16px; 
-          padding: 8px; 
+          padding: 8px;
+          margin: var(--ddd-spacing-4);  
+        }
+
+        .theparty {
+          padding: var(--ddd-spacing-2); 
+          display: flex; 
+        }
+
+        .character { 
+          margin: var(--ddd-spacing-4); 
+          background-color: lightblue; 
+        }
+
+        .rpg {
+          align-self: center; 
+        }
+
+        .userName {
+          margin: var(--ddd-spacing-2); 
+          text-align: center; 
+          
+        }
+
+        .remove {
+          color: var(--ddd-theme-default-original87Pink);
+          background-color: transparent; 
+          float: right; 
+          margin: var(--ddd-spacing-4); 
+        }
+
+        .save {
+          font-size: 16px; 
+          padding: 8px;
+          margin: var(--ddd-spacing-4);  
         }
       `];
     }
+
+    updateName(event) {
+      this.seed = event.target.value; 
+    }
+
+    addUser(e) {
+      const randomNumber = globalThis.crypto.getRandomValues(new Uint32Array(1))[0]; 
+      
+      const user = {
+        id: randomNumber,
+        name: this.seed,
+      }
+
+      console.log(user); 
+      this.party.push(user); 
+      this.requestUpdate(); 
+      console.log(this.party); 
+    }
+
+    removeUser(e) {
+      this.shadowRoot.querySelectorAll('div').forEach((user) => {
+        if (user === e.target.closest('div')) {
+          console.log(user); 
+          user.remove(); 
+        }
+      })
+    }
+
 
     render() {
       
         return html`          
           <div class=wrapper>
-
-
             <div class=titlebar>
               <div class=title>${this.title}</div>
               <button class=close>x</button>
@@ -99,11 +159,23 @@ export class HaxParty extends DDD {
 
             <h5 class=heading>Enter username</h5>
             <div class=inputwrapper>
-              <input class=username maxlength="30" placeholder="user name.." tabindex="">
-              <button class=add>Add</button>
+              <input class=username maxlength="30" placeholder="user name..." tabindex="" @input="${this.updateName}"/>
+              <button class=add @click="${this.addUser}">Add</button>
             </div>
 
-            <slot class=theparty></slot>
+            <slot class=theparty>
+              ${this.party.map((user) => html`
+              <div class="character ${user.name}">
+                <rpg-character class="rpg" seed="${user.name}"></rpg-character>
+                <button class="remove" @click="${this.removeUser}">x</button>
+                <p class="userName">
+                  ${user.name}
+                </p>
+                
+              </div>
+              `)}
+            </slot>
+            <button class="save">Save Party</button>
           </div>
            
           `;
@@ -113,7 +185,9 @@ export class HaxParty extends DDD {
     static get properties() {
       return {
         ...super.properties,
-        title: { type: String }
+        title: { type: String },
+        party: { type: Array },
+        seed: { type: String, attribute: "username"},
       }
     }
   }

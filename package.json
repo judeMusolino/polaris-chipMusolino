@@ -18,6 +18,7 @@
     "@lrnwebcomponents/d-d-d": "^8.0.2",
     "@lrnwebcomponents/meme-maker": "^8.0.0",
     "@lrnwebcomponents/multiple-choice": "^8.0.0",
+    "@lrnwebcomponents/rpg-character": "^8.0.2",
     "lit": "^3.1.2"
   },
   "devDependencies": {
