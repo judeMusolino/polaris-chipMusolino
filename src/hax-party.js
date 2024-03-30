@@ -2,6 +2,7 @@ import { DDD } from "@lrnwebcomponents/d-d-d/d-d-d.js";
 import {html, css } from 'lit';
 import "@lrnwebcomponents/rpg-character/rpg-character.js";
 
+
 export class HaxParty extends DDD {
     static get tag() {
         return "hax-party"; 
@@ -12,6 +13,7 @@ export class HaxParty extends DDD {
         this.title = "Add User(s) to Party"; 
         this.party = []; 
         this.seed = "username"; 
+        this.saved = false; 
     }
     
     static get styles() {
@@ -24,9 +26,12 @@ export class HaxParty extends DDD {
 
         .wrapper {
             background-color: white; 
-            margin: 20px; 
+            width: 98%; 
+            margin-left: auto;
+            margin-right: auto; 
             border-radius: var(--ddd-radius-xs); 
-            width: 800px;
+            padding-top: 0px; 
+            padding-bottom: var(--ddd-spacing-4);  
         }
 
         .titlebar {
@@ -72,9 +77,9 @@ export class HaxParty extends DDD {
           align-items: center;
         }
 
-        .username {
-          font-family: "Press Start 2P", sans-serif;
-          font-size: 32px;
+        .inputname {
+          font-family: 'Press Start 2P', sans-serif; 
+          font-size: var(--ddd-theme-h6-font-size);
           padding: 8px;
           margin: 0px; 
         }
@@ -87,22 +92,25 @@ export class HaxParty extends DDD {
 
         .theparty {
           padding: var(--ddd-spacing-2); 
-          display: flex; 
+          display: inline-flex; 
+          flex-wrap: wrap; 
         }
 
         .character { 
-          margin: var(--ddd-spacing-4); 
+          margin: var(--ddd-spacing-2); 
           background-color: lightblue; 
+          width: auto; 
+          height: auto; 
         }
 
         .rpg {
-          align-self: center; 
+          transform: scale(0.75);   
+          margin-left: var(--ddd-spacing-2); 
         }
 
         .userName {
           margin: var(--ddd-spacing-2); 
           text-align: center; 
-          
         }
 
         .remove {
@@ -115,7 +123,13 @@ export class HaxParty extends DDD {
         .save {
           font-size: 16px; 
           padding: 8px;
-          margin: var(--ddd-spacing-4);  
+          margin-left: var(--ddd-spacing-4); 
+          display: block;  
+        }
+
+        #confetti {
+            height: 100%; 
+            width: 100%; 
         }
       `];
     }
@@ -124,33 +138,46 @@ export class HaxParty extends DDD {
       this.seed = event.target.value; 
     }
 
-    addUser(e) {
-      const randomNumber = globalThis.crypto.getRandomValues(new Uint32Array(1))[0]; 
+    addUser(e) {      
       
-      const user = {
-        id: randomNumber,
-        name: this.seed,
-      }
+      const user = this.seed
 
-      console.log(user); 
-      this.party.push(user); 
-      this.requestUpdate(); 
-      console.log(this.party); 
+        if (this.party.includes(this.seed)) {
+          console.log(user);  
+        }
+        else {
+        console.log(user); 
+        this.party.push(user); 
+        this.requestUpdate(); 
+        console.log(this.party);
+        } 
     }
 
     removeUser(e) {
       this.shadowRoot.querySelectorAll('div').forEach((user) => {
         if (user === e.target.closest('div')) {
           console.log(user); 
-          user.remove(); 
+          
+          index = this.party.indexOf(user); 
+          const removed = this.party.splice(index, 1); 
+
+          console.log(this.party); 
+          console.log(removed); 
+          user.remove();
         }
       })
     }
 
-
+    saveParty(e) {
+      if (this.saved === false) {
+        this.saved = true;
+        console.log(this.party); 
+      }
+    }
+  
     render() {
-      
         return html`          
+          <confetti-container id="confetti">
           <div class=wrapper>
             <div class=titlebar>
               <div class=title>${this.title}</div>
@@ -159,28 +186,43 @@ export class HaxParty extends DDD {
 
             <h5 class=heading>Enter username</h5>
             <div class=inputwrapper>
-              <input class=username maxlength="30" placeholder="user name..." tabindex="" @input="${this.updateName}"/>
+              <input class=inputname maxlength="30" placeholder="user name..." tabindex="" @input="${this.updateName}"/>
               <button class=add @click="${this.addUser}">Add</button>
             </div>
 
             <slot class=theparty>
               ${this.party.map((user) => html`
-              <div class="character ${user.name}">
-                <rpg-character class="rpg" seed="${user.name}"></rpg-character>
+              <div class="character">
+                <rpg-character class="rpg" seed="${user}"></rpg-character>
                 <button class="remove" @click="${this.removeUser}">x</button>
                 <p class="userName">
-                  ${user.name}
+                  ${user}
                 </p>
                 
               </div>
               `)}
             </slot>
-            <button class="save">Save Party</button>
+            <button class="save" @click="${this.saveParty}" ?disabled="${this.saved === true}">Save Party</button>
           </div>
-           
+          </confetti-container>
           `;
       }
-      
+
+    updated(changedProperties) {
+      if (changedProperties.has("saved") && this.saved == true) {
+        this.makeItRain(); 
+      }
+    }
+  
+    makeItRain() {
+      import("@lrnwebcomponents/multiple-choice/lib/confetti-container.js").then(
+      (module) => {
+        setTimeout(() => {
+          this.shadowRoot.querySelector("#confetti").setAttribute("popped", "");
+        }, 0);
+      }
+      );
+    }
       
     static get properties() {
       return {
@@ -188,6 +230,7 @@ export class HaxParty extends DDD {
         title: { type: String },
         party: { type: Array },
         seed: { type: String, attribute: "username"},
+        saved: { type: Boolean },
       }
     }
   }
