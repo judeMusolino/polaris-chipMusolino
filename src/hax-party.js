@@ -98,7 +98,8 @@ export class HaxParty extends DDD {
 
         .character { 
           margin: var(--ddd-spacing-2); 
-          background-color: lightblue; 
+          background-color: transparent; 
+          border: 2px solid var(--ddd-theme-default-keystoneYellow); 
           width: auto; 
           height: auto; 
         }
@@ -154,18 +155,17 @@ export class HaxParty extends DDD {
     }
 
     removeUser(e) {
-      this.shadowRoot.querySelectorAll('div').forEach((user) => {
-        if (user === e.target.closest('div')) {
-          console.log(user); 
-          
-          index = this.party.indexOf(user); 
-          const removed = this.party.splice(index, 1); 
+      const userNameP = e.target.closest('.character').querySelector('.userName');
+      const x = userNameP.textContent.trim();
+      const index = this.party.indexOf(x);
+      
+      if (index !== -1) {
+        this.party.splice(index, 1);
+      }
 
-          console.log(this.party); 
-          console.log(removed); 
-          user.remove();
-        }
-      })
+      console.log(this.party); 
+    
+      e.target.closest('div').remove();
     }
 
     saveParty(e) {
@@ -186,8 +186,8 @@ export class HaxParty extends DDD {
 
             <h5 class=heading>Enter username</h5>
             <div class=inputwrapper>
-              <input class=inputname maxlength="30" placeholder="user name..." tabindex="" @input="${this.updateName}"/>
-              <button class=add @click="${this.addUser}">Add</button>
+              <input class=inputname maxlength="30" placeholder="user name..." @input="${this.updateName}"/>
+              <button class=add @click="${this.addUser}" ?disabled="${this.saved === true}">Add</button>
             </div>
 
             <slot class=theparty>
