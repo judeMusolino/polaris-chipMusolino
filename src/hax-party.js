@@ -32,6 +32,7 @@ export class HaxParty extends DDD {
             border-radius: var(--ddd-radius-xs); 
             padding-top: 0px; 
             padding-bottom: var(--ddd-spacing-4);  
+            box-shadow: 0px 0px 5px 4px grey;
         }
 
         .titlebar {
@@ -63,7 +64,6 @@ export class HaxParty extends DDD {
         .heading {
           display: block; 
           font-size: var(--ddd-theme-h8-font-size); 
-          font: var(--ddd-font-secondary); 
           margin: 0px;
           padding: var(--ddd-spacing-4);
           color: var(--simple-modal-header-color);
@@ -78,16 +78,10 @@ export class HaxParty extends DDD {
         }
 
         .inputname {
-          font-family: 'Press Start 2P', sans-serif; 
+          font-family: "Press Start 2P", sans-serif; 
           font-size: var(--ddd-theme-h6-font-size);
           padding: 8px;
           margin: 0px; 
-        }
-
-        .add {
-          font-size: 16px; 
-          padding: 8px;
-          margin: var(--ddd-spacing-4);  
         }
 
         .theparty {
@@ -121,11 +115,21 @@ export class HaxParty extends DDD {
           margin: var(--ddd-spacing-4); 
         }
 
-        .save {
+        .save, .add {
           font-size: 16px; 
           padding: 8px;
           margin-left: var(--ddd-spacing-4); 
-          display: block;  
+          display: block; 
+          color: white;
+          background-color: green;
+          border: 2px solid black;
+          border-radius: 8px;
+          font-family: "Press Start 2P", sans-serif; 
+        }
+
+        .save:hover, .add:hover {
+          background-color: black; 
+          border: 2px solid white; 
         }
 
         #confetti {
@@ -137,6 +141,14 @@ export class HaxParty extends DDD {
 
     updateName(event) {
       this.seed = event.target.value; 
+    }
+
+    addOnEnter(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault(); 
+        const addButton = this.shadowRoot.querySelector('.add');
+        addButton.click();
+      }
     }
 
     addUser(e) {      
@@ -155,17 +167,16 @@ export class HaxParty extends DDD {
     }
 
     removeUser(e) {
-      const userNameP = e.target.closest('.character').querySelector('.userName');
-      const x = userNameP.textContent.trim();
-      const index = this.party.indexOf(x);
-      
+      const userNameL = e.target.parentNode.querySelector('.userName').innerText; 
+      const index = this.party.indexOf(userNameL);
+
       if (index !== -1) {
         this.party.splice(index, 1);
+        e.target.parentNode.remove();
       }
 
       console.log(this.party); 
-    
-      e.target.closest('div').remove();
+      console.log(userNameL); 
     }
 
     saveParty(e) {
@@ -184,9 +195,9 @@ export class HaxParty extends DDD {
               <button class=close>x</button>
             </div>
 
-            <h5 class=heading>Enter username</h5>
+            <h5 class=heading>Enter Username</h5>
             <div class=inputwrapper>
-              <input class=inputname maxlength="30" placeholder="user name..." @input="${this.updateName}"/>
+              <input class=inputname maxlength="30" placeholder="user name..." @input="${this.updateName}" @keypress="${this.addOnEnter}"/>
               <button class=add @click="${this.addUser}" ?disabled="${this.saved === true}">Add</button>
             </div>
 
