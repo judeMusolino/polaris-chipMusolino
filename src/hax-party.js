@@ -47,7 +47,6 @@ export class HaxParty extends DDD {
         }
 
         .title {
-            color: var(--ddd-theme-default-keystoneYellow);
             margin: 0;
             padding: 0;
             text-align: center;
@@ -66,7 +65,6 @@ export class HaxParty extends DDD {
           font-size: var(--ddd-theme-h8-font-size); 
           margin: 0px;
           padding: var(--ddd-spacing-4);
-          color: var(--simple-modal-header-color);
         }
 
         .inputwrapper {
@@ -80,7 +78,7 @@ export class HaxParty extends DDD {
         .inputname {
           font-family: "Press Start 2P", sans-serif; 
           font-size: var(--ddd-theme-h6-font-size);
-          padding: 8px;
+          padding: var(--ddd-spacing-2);
           margin: 0px; 
         }
 
@@ -115,7 +113,7 @@ export class HaxParty extends DDD {
           margin: var(--ddd-spacing-4); 
         }
 
-        .save, .add {
+        .save, .add, .unsave {
           font-size: 16px; 
           padding: 8px;
           margin-left: var(--ddd-spacing-4); 
@@ -127,20 +125,31 @@ export class HaxParty extends DDD {
           font-family: "Press Start 2P", sans-serif; 
         }
 
-        .save:hover, .add:hover {
+        .unsave {
+          margin-top: var(--ddd-spacing-2);
+        }
+
+        .save:hover, .add:hover, .unsave:hover {
           background-color: black; 
           border: 2px solid white; 
         }
 
+        .save:disabled, .add:disabled {
+          background-color: grey; 
+          border: 2px solid grey; 
+        }
+
+        .unsave:disabled {
+          font-size: 0px; 
+          padding: 0px; 
+          border: 0px solid transparent; 
+        }
+
         #confetti {
-            height: 100%; 
-            width: 100%; 
+          height: 100%; 
+          width: 100%; 
         }
       `];
-    }
-
-    updateName(event) {
-      this.seed = event.target.value; 
     }
 
     addOnEnter(e) {
@@ -152,18 +161,24 @@ export class HaxParty extends DDD {
     }
 
     addUser(e) {      
-      
-      const user = this.seed
+      const user = this.shadowRoot.querySelector('.inputname'); 
 
-        if (this.party.includes(this.seed)) {
-          console.log(user);  
+      if (!/[a-z0-9]/.test(user.value)) {
+        e.preventDefault(); 
+        alert ("Username should consist of only lowercase letters and numbers.")
+      }
+      else {
+        if (this.party.includes(user.value)) {
+          console.log(user.value);  
         }
         else {
-        console.log(user); 
-        this.party.push(user); 
+        console.log(user.value); 
+        this.party.push(user.value); 
         this.requestUpdate(); 
         console.log(this.party);
+        this.shadowRoot.querySelector('.inputname').value = ''; 
         } 
+      }
     }
 
     removeUser(e) {
@@ -172,7 +187,8 @@ export class HaxParty extends DDD {
 
       if (index !== -1) {
         this.party.splice(index, 1);
-        e.target.parentNode.remove();
+        this.requestUpdate();
+        // e.target.parentNode.remove();
       }
 
       console.log(this.party); 
@@ -183,6 +199,9 @@ export class HaxParty extends DDD {
       if (this.saved === false) {
         this.saved = true;
         console.log(this.party); 
+      }
+      else {
+        this.saved = false;  
       }
     }
   
@@ -197,7 +216,7 @@ export class HaxParty extends DDD {
 
             <h5 class=heading>Enter Username</h5>
             <div class=inputwrapper>
-              <input class=inputname maxlength="30" placeholder="user name..." @input="${this.updateName}" @keypress="${this.addOnEnter}"/>
+              <input class=inputname maxlength="30" placeholder="user name..." pattern="[a-z0-9]*" @keypress="${this.addOnEnter}"/>
               <button class=add @click="${this.addUser}" ?disabled="${this.saved === true}">Add</button>
             </div>
 
@@ -205,7 +224,7 @@ export class HaxParty extends DDD {
               ${this.party.map((user) => html`
               <div class="character">
                 <rpg-character class="rpg" seed="${user}"></rpg-character>
-                <button class="remove" @click="${this.removeUser}">x</button>
+                <button class="remove" @click="${this.removeUser}" ?disabled="${this.saved === true}">x</button>
                 <p class="userName">
                   ${user}
                 </p>
@@ -214,6 +233,7 @@ export class HaxParty extends DDD {
               `)}
             </slot>
             <button class="save" @click="${this.saveParty}" ?disabled="${this.saved === true}">Save Party</button>
+            <button class="unsave" @click="${this.saveParty}" ?disabled="${this.saved === false}">Edit Party</button>
           </div>
           </confetti-container>
           `;
