@@ -10,7 +10,7 @@ export class CounterApp extends LitElement {
         super(); 
         this.counter = 10; 
         this.min = 0; 
-        this.max = 20; 
+        this.max = 25; 
     }
 
     static get styles() {
@@ -25,7 +25,7 @@ export class CounterApp extends LitElement {
         }
 
         .wrapper {
-            background-color: khaki; 
+            background-color: #c6dbc4;   
             width: 180px; 
             height: 160px;  
             box-shadow: 5px 5px 5px brown;
@@ -57,6 +57,7 @@ export class CounterApp extends LitElement {
         .plus:hover, .plus:focus, .minus:hover, .minus:focus {
             background-color: black; 
             color: white; 
+            cursor: pointer; 
         }
         `;
     }

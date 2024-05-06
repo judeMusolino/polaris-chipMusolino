@@ -136,7 +136,7 @@ export class MyCard extends LitElement {
       <div class="card">
       <div class="heading">${this.title}</div>
       <div class="image">
-      <meme-maker class="meme" alt="Cat stalking a small toy" image-url="${this.image}" top-text="I bring you" bottom-text="the death"> </meme-maker> 
+      <meme-maker class="meme" alt="Cat stalking a small toy" image-url="${this.image}" top-text="" bottom-text=""> </meme-maker> 
       </div>
       <p class="para">${this.para}</p>
     <a href="${this.link}">

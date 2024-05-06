@@ -113,6 +113,12 @@ export class HaxParty extends DDD {
           margin: var(--ddd-spacing-4); 
         }
 
+        .remove:hover {
+          background-color: black; 
+          color: white; 
+          cursor: pointer; 
+        }
+
         .save, .add, .unsave {
           font-size: 16px; 
           padding: 8px;
@@ -123,6 +129,7 @@ export class HaxParty extends DDD {
           border: 2px solid black;
           border-radius: 8px;
           font-family: "Press Start 2P", sans-serif; 
+          cursor: pointer; 
         }
 
         .unsave {
