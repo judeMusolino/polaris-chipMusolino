@@ -25,7 +25,7 @@ export class CounterApp extends LitElement {
         }
 
         .wrapper {
-            background-color: #c6dbc4;   
+            background-color: #ecc9bc;   
             width: 180px; 
             height: 160px;  
             box-shadow: 5px 5px 5px brown;
